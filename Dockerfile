@@ -7,7 +7,6 @@ RUN apt-get update -y
 RUN apt-get install -y tzdata
 RUN echo "Asia/Tokyo" >  /etc/timezone
 RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-RUN apt-get uninstall -y tzdata
 
 RUN pip install -U pip
 RUN pip install pipenv
