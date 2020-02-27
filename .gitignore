@@ -3,3 +3,4 @@
 *.pyc
 mysql/*
 !mysql/.gitkeep
+.python-version
