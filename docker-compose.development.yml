@@ -12,10 +12,10 @@ services:
     ports:
       - "8000:80"
     environment:
+      - DB_HOST=mysql
       - DB_NAME=main
       - DB_USER=user
       - DB_PASSWORD=password
-      - DB_HOST=db
       - DB_PORT=3306
     depends_on:
       - mysql
