@@ -2,6 +2,7 @@ import logging
 
 from fastapi import FastAPI
 
+from .db import database
 from .routes import user
 from .settings import PathConfig
 
@@ -18,6 +19,16 @@ file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)8s %(messag
 
 logger.addHandler(stream_handler)
 logger.addHandler(file_handler)
+
+
+@app.on_event("startup")
+async def startup():
+    await database.connect()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    await database.disconnect()
 
 
 @app.get("/")  # methodとendpointの指定
