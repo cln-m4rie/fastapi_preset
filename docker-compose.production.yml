@@ -16,3 +16,15 @@ services:
       - DB_USER=user
       - DB_PASSWORD=password
       - DB_PORT=3306
+      - SECRET_KEY=
+  nginx:
+    container_name: example_nginx
+    build:
+      context: ./docker/nginx
+    ports:
+      - "8000:8000"
+    depends_on:
+      - app
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./logs/nginx:/var/log/nginx

@@ -18,12 +18,13 @@ services:
       - DB_USER=user
       - DB_PASSWORD=password
       - DB_PORT=3306
+      - SECRET_KEY=09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7
     depends_on:
       - mysql
   nginx:
     container_name: example_nginx
     build:
-      context: ./nginx
+      context: ./docker/nginx
     ports:
       - "8000:8000"
     depends_on:
@@ -33,7 +34,8 @@ services:
       - ./logs/nginx:/var/log/nginx
   mysql:
     container_name: example_mysql
-    image: mysql:5.7
+    build:
+      context: ./docker/mysql
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     restart: always
     volumes:

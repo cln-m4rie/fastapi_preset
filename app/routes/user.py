@@ -1,4 +1,7 @@
+import logging
 from datetime import datetime, timedelta
+
+from sqlalchemy.orm import Session
 
 import jwt
 from fastapi import APIRouter, Depends, HTTPException
@@ -8,12 +11,20 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 from starlette.status import HTTP_401_UNAUTHORIZED
 
+from ..handlers import user as user_handler
+from ..helpers.session_helper import get_db
+from ..models.user import User
+from ..schemas.db.user import UserCreateSchema
+from ..schemas.response.user import UserResponse
+
 router = APIRouter()
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 fake_users_db = {
     "johndoe": {
@@ -35,11 +46,9 @@ class TokenData(BaseModel):
     username: str = None
 
 
-class User(BaseModel):
-    username: str
-    email: str = None
-    full_name: str = None
-    disabled: bool = None
+# class User(BaseModel):
+#     username: str
+#     email: str = None
 
 
 class UserInDB(User):
@@ -129,6 +138,12 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/users/me/", response_model=User)
-async def read_users_me(current_user: User = Depends(get_current_active_user)):
-    return current_user
+# @router.get("/users/me/", response_model=User)
+# async def read_users_me(current_user: User = Depends(get_current_active_user)):
+#     return current_user
+
+
+@router.post("/users")
+async def create_user(user_schema: UserCreateSchema, db: Session = Depends(get_db)):
+    user = user_handler.create_user(user_schema, db)
+    return {"msg": "created", "user": UserResponse(user).serialize()}

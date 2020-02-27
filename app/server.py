@@ -1,15 +1,20 @@
 import logging
 
-from fastapi import FastAPI
+from sqlalchemy.orm import sessionmaker
 
-from .databases.tables import user
-from .databases.tables.base import Base
-from .db import database, engine
-from .routes import user
+from fastapi import FastAPI
+from starlette.requests import Request
+
+from .db import engine
+from .models import user  # noqa
+from .models.base import Base
+from .routes.user import router as user_router
 from .settings import PathConfig
 
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 app = FastAPI()
-app.include_router(user.router)
+app.include_router(user_router)
 logger = logging.getLogger("app")
 
 
@@ -27,17 +32,15 @@ logger.addHandler(file_handler)
 Base.metadata.create_all(bind=engine)
 
 
-@app.on_event("startup")
-async def startup():
-    await database.connect()
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    await database.disconnect()
-
-
 @app.get("/")  # methodとendpointの指定
 async def hello():
-    logger.debug("test")
     return {"text": "hello world!"}
+
+
+# middleware state.connectionにdatabaseオブジェクトをセットする。
+@app.middleware("http")
+async def db_session_middleware(request: Request, call_next):
+    request.state.db = SessionLocal()
+    response = await call_next(request)
+    request.state.db.close()
+    return response
