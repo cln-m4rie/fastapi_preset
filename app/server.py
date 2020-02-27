@@ -9,14 +9,15 @@ app = FastAPI()
 app.include_router(user.router)
 logger = logging.getLogger("app")
 
-handler1 = logging.StreamHandler()
-handler1.setFormatter(logging.Formatter("%(asctime)s %(levelname)8s %(message)s"))
-handler2 = logging.FileHandler(filename=str(PathConfig.log / "app.log"))  # handler2はファイル出力
-handler2.setLevel(logging.DEBUG)  # handler2はLevel.WARN以上
-handler2.setFormatter(logging.Formatter("%(asctime)s %(levelname)8s %(message)s"))
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.DEBUG)
+stream_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)8s %(message)s"))
+file_handler = logging.FileHandler(filename=str(PathConfig.log / "app.log"))
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)8s %(message)s"))
 
-logger.addHandler(handler1)
-logger.addHandler(handler2)
+logger.addHandler(stream_handler)
+logger.addHandler(file_handler)
 
 
 @app.get("/")  # methodとendpointの指定
