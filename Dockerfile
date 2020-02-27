@@ -3,8 +3,6 @@ FROM python:3.8-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /app
-
 RUN apt-get update -y
 RUN apt-get install -y tzdata
 RUN echo "Asia/Tokyo" >  /etc/timezone
@@ -12,8 +10,8 @@ RUN echo "Asia/Tokyo" >  /etc/timezone
 RUN pip install -U pip
 RUN pip install pipenv
 
-ADD Pipfile /app
-ADD Pipfile.lock /app
+ADD Pipfile /
+ADD Pipfile.lock /
 
 RUN pipenv lock -r > requirements.txt
 RUN apt-get install -y g++ make default-libmysqlclient-dev default-mysql-client
@@ -27,4 +25,4 @@ EXPOSE 80
 
 COPY ./app /app
 
-CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "app.server:app", "--host", "0.0.0.0", "--port", "80"]
