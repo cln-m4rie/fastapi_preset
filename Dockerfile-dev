@@ -1,0 +1,18 @@
+FROM python:3.7-slim
+
+WORKDIR /app
+
+RUN pip install -U pip
+RUN pip install pipenv
+
+ADD Pipfile /app
+ADD Pipfile.lock /app
+
+RUN pipenv lock -r > requirements.txt
+RUN pip install -r requirements.txt --no-cache-dir
+RUN rm requirements.txt
+
+EXPOSE 80
+
+COPY ./app /app
+
