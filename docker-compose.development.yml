@@ -47,5 +47,5 @@ services:
       - MYSQL_DATABASE=main
       - MYSQL_USER=user
       - MYSQL_PASSWORD=password
-      - MYSQL_ROOT_HOST="%"
-      - TZ="Asia/Tokyo"
+      - MYSQL_ROOT_HOST=%
+      - TZ=Asia/Tokyo
