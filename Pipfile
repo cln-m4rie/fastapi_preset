@@ -9,13 +9,21 @@ flake8 = "*"
 autoflake = "*"
 isort = "*"
 autopep8 = "*"
+black = "*"
 
 [packages]
 fastapi = "*"
 uvicorn = "*"
 sqlalchemy = "*"
 pyjwt = "*"
-passlib = "*"
+passlib = {extras = ["bcrypt"],version = "*"}
+python-multipart = "*"
+databases = {extras = ["mysql"],version = "*"}
+environs = "*"
+mysqlclient = "*"
 
 [requires]
 python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true
