@@ -2,7 +2,9 @@ import logging
 
 from fastapi import FastAPI
 
-from .db import database
+from .databases.tables import user
+from .databases.tables.base import Base
+from .db import database, engine
 from .routes import user
 from .settings import PathConfig
 
@@ -19,6 +21,8 @@ file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)8s %(messag
 
 logger.addHandler(stream_handler)
 logger.addHandler(file_handler)
+
+Base.metadata.create_all(bind=engine)
 
 
 @app.on_event("startup")
