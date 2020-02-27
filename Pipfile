@@ -8,6 +8,7 @@ pylint = "*"
 flake8 = "*"
 autoflake = "*"
 isort = "*"
+autopep8 = "*"
 
 [packages]
 fastapi = "*"
