@@ -4,4 +4,4 @@ format:  ## format all python codes
 	black .
 
 dev:
-	uvicorn server:app --reload
+	uvicorn app.server:app --reload

@@ -1,4 +1,6 @@
 .vscode
 .idea
 *.pyc
+mysql/*
+!mysql/.gitkeep
 .python-version
