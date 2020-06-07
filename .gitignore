@@ -1,7 +1,3 @@
-.vscode
-.idea
-*.pyc
-mysql/*
-!mysql/.gitkeep
-.python-version
 *.log
+.vscode/
+.idea/
