@@ -3,3 +3,4 @@
 .idea/
 .python-version
 *.egg-info
+*.pyc
