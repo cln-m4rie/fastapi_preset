@@ -2,3 +2,4 @@
 .vscode/
 .idea/
 .python-version
+*.egg-info

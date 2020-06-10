@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 requirements = [
-    'fastapi>=0.55.1',
+    'fastapi',
     'environs'
 ]
 
